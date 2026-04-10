@@ -1,8 +1,10 @@
 import express from 'express';
-import notesRoutes from './routes/notesRoutes.js';
-import { connectDB } from './config/db.js';
+import cors from 'cors';
 import dotenv from 'dotenv';
+
+import { connectDB } from './config/db.js';
 import rateLimiter from './middleware/rateLimiter.js';
+import notesRoutes from './routes/notesRoutes.js';
 
 dotenv.config();
 
@@ -14,6 +16,13 @@ if (!PORT) {
 }
 
 // Middleware
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
+
 app.use(express.json()); // parse the incoming request body in JSON format
 
 // Custom middleware
